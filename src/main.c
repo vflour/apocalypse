@@ -5,13 +5,37 @@
 
 Apocalypse apoco;
 
-//
+// files
+#include "submenu_bg.h"
+
 void video_init() {
+	
 	videoSetMode(MODE_0_3D);
+	videoSetModeSub(MODE_5_2D);
 
     vramSetBankA(VRAM_A_TEXTURE);
-    
-    consoleDemoInit();
+    vramSetBankB(VRAM_B_MAIN_SPRITE);
+    vramSetBankC(VRAM_C_SUB_BG);
+    vramSetBankD(VRAM_D_LCD);
+	vramSetBankG(VRAM_G_TEX_PALETTE); // palette for B
+	vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE); // palette for C
+
+	// maybe
+	// could instead be used for other memory idk
+	// vramSetBankE(VRAM_E_BG);
+	// vramSetBankI(VRAM_I_SUB_SPRITE);
+
+    // consoleDemoInit(); this initializes vram C to contain console display shit 
+}
+
+// mfw too lazy to create a file
+void bottom_gui_init() {
+
+	const int DMA_CHANNEL = 3;
+	const int bg_id = bgInitSub(3, BgType_Bmp8, BgSize_B8_256x256, 0, 0);
+	dmaCopyHalfWords(DMA_CHANNEL, submenu_bgBitmap, bgGetGfxPtr(bg_id), submenu_bgBitmapLen);
+	dmaCopyHalfWords(DMA_CHANNEL, submenu_bgPal, BG_PALETTE_SUB, submenu_bgPalLen);
+
 }
 
 
@@ -85,7 +109,7 @@ void init() {
 	video_init();
 	gl_init();
 	apocalypse_init(&apoco);
-
+	bottom_gui_init();
 }
 
 

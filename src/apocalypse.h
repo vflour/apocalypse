@@ -4,6 +4,8 @@
 #include <nds.h>
 #include <dsma.h>
 
+typedef int32 f32;
+
 typedef enum ApocalypseState {
     Idle,
     Wandering,
@@ -14,25 +16,26 @@ typedef enum ApocalypseState {
 
 typedef struct Apocalypse {
     // position
-    float x;
-    float y;
-    float z;
+    f32 x;
+    f32 y;
+    f32 z;
+    // speed
+    f32 v;
     // velocity
-    float v_x;
-    float v_y;
-    float v_z;
-    // move towards target
-    int moving_to_target;
+    f32 v_x;
+    f32 v_y;
+    f32 v_z;
     // target
-    int target_x;
-    int target_y;
-    int target_z;
+    f32 target_x;
+    f32 target_y;
+    f32 target_z;
     // bounds (+- n, where n is either in the x or z directions)
     int bounds_x;
     int bounds_z;
     // rotation around the y axis
-    float rotation;
-
+    int rotation;
+    // move towards target
+    int moving_to_target;
     // state
     ApocalypseState state;
     // current frame
